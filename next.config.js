@@ -11,7 +11,7 @@ const mdx = require("@next/mdx")({
 module.exports = withPlugins([
   [mdx, {
     reactStrictMode: true,
-    basePath: "/docs",
+    basePath: "",
     pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"]
   }],
   [optimizedImages, {
