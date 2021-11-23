@@ -14,7 +14,6 @@ import InlineCode from "./mdx/InlineCode";
 
 import RouteHeader from "./RouteHeader";
 import Alert from "./Alert";
-import Image from "next/image";
 
 const COMPONENTS = {
 	wrapper: (props: any) => <ContentWrapper {...props} />,
@@ -42,7 +41,6 @@ const COMPONENTS = {
 	a: Anchor,
 
 	// Custom components
-	Image,
 	Alert,
 	RouteHeader,
 };
