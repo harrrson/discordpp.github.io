@@ -117,21 +117,21 @@ export default function Navigation() {
 				<ThemeSwitcher />
 			</div>
 
-			<NavigationSection title="Applications">
-				<NavigationLink href="https://discord.com/developers/applications" className="text-lg">
-					Applications
+			<NavigationSection>
+				<NavigationLink href="https://theundarkpixel.com/" className="text-lg">
+					Back to The Undark Pixel
 				</NavigationLink>
-				<NavigationLink href="https://discord.com/developers/teams" className="text-lg">
-					Teams
+				<NavigationLink href="https://discord.gg/VHAyrvspCx" className="text-lg">
+					Join our Discord!
 				</NavigationLink>
-				<NavigationLink href="https://discord.gg/discord-developers" className="text-lg">
-					Join our Developer Discord!
+				<NavigationLink href="https://discord.com/developers/docs" className="text-lg">
+					Official Discord API Docs
 				</NavigationLink>
 			</NavigationSection>
 
 			<NavigationSection title="Documentation">
+				<NavigationLink href="/">Intro</NavigationLink>
 				<NavigationLink href="/changelog">Changelog</NavigationLink>
-				<NavigationLink href="/intro">Intro</NavigationLink>
 				<NavigationLink href="/legal">Legal</NavigationLink>
 				<NavigationLink href="/policy">Policy</NavigationLink>
 				<NavigationLink
