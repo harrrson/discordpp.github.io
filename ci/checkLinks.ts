@@ -60,7 +60,7 @@ function scanFile(
 			const split = match[index].split("#");
 			let url = split[0].endsWith("/") ? split[0].slice(0, -1) : split[0];
 			if (match[index].startsWith("#")) url = name;
-			if (!valid.has(url)) {
+			if (!valid.has(url) && match[0] !== 'href="/"') {
 				results.push({
 					title: `Base url ${chalk.blueBright(url)} does not exist`,
 					startLine: lineNum + 1,
