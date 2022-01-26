@@ -1,53 +1,53 @@
 @import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap");
 
 .snowflake-dec-sz-normal {
-  font-size: 12px;
+	font-size: 12px;
 }
 
 .snowflake-dec-sz-small {
-  font-size: 8px;
+	font-size: 8px;
 }
 
 .snowflake-dec-number {
-  font-family: SourceCodePro-Regular, Source Code Pro;
+	font-family: SourceCodePro-Regular, Source Code Pro;
 }
 
 .snowflake-dec-text {
-  font-family: ArialMT, Arial;
+	font-family: ArialMT, Arial;
 }
 
 .snowflake-dec-reduce-space {
-  letter-spacing: -0.02em;
+	letter-spacing: -0.02em;
 }
 
 .snowflake-dec-ms {
-  fill: #3cb119;
+	fill: #3cb119;
 }
 
 .dark .snowflake-dec-ms {
-  fill: #7cf559;
+	fill: #7cf559;
 }
 
 .snowflake-dec-worker {
-  fill: #7d24d6;
+	fill: #7d24d6;
 }
 
 .dark .snowflake-dec-worker {
-  fill: #a65eef;
+	fill: #a65eef;
 }
 
 .snowflake-dec-process {
-  fill: #de0ede;
+	fill: #de0ede;
 }
 
 .dark .snowflake-dec-process {
-  fill: #ec40c4;
+	fill: #ec40c4;
 }
 
 .snowflake-dec-increment {
-  fill: #e40606;
+	fill: #e40606;
 }
 
 .dark .snowflake-dec-increment {
-  fill: #f75454;
+	fill: #f75454;
 }

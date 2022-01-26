@@ -9,185 +9,196 @@ import Discord from "./icons/Discord";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 interface mi {
-  [key: string]: miCategory;
+	[key: string]: miCategory;
 }
 
 interface miLink {
-  title: string;
-  sublinks: string[];
+	title: string;
+	sublinks: string[];
 }
 
 interface miCategory {
-  name: string;
-  items: miLink[];
+	name: string;
+	items: miLink[];
 }
 
 import menuItems from "../vals/menuItems";
 
 interface MenuSelectionProps {
-  title?: string;
-  children: React.ReactNode;
-  className?: string;
+	title?: string;
+	children: React.ReactNode;
+	className?: string;
 }
 
 function NavigationSection({ title, className, children }: MenuSelectionProps) {
-  const classes = classNames("mb-6", className);
+	const classes = classNames("mb-6", className);
 
-  return (
-    <section className={classes}>
-      {title ? (
-        <h3 className="mb-2 ml-2 text-black dark:text-white font-whitney-bold text-xs uppercase">{title}</h3>
-      ) : null}
-      {children}
-    </section>
-  );
+	return (
+		<section className={classes}>
+			{title ? (
+				<h3 className="mb-2 ml-2 text-black dark:text-white font-whitney-bold text-xs uppercase">{title}</h3>
+			) : null}
+			{children}
+		</section>
+	);
 }
 
 interface NavigationLinkProps {
-  href: string;
-  subLinks?: React.ReactNode;
-  className?: string;
-  children: React.ReactNode;
+	href: string;
+	subLinks?: React.ReactNode;
+	className?: string;
+	children: React.ReactNode;
 }
 
 function NavigationLink({ href, subLinks, className, children }: NavigationLinkProps) {
-  const router = useRouter();
-  const { value: isOpen, toggle } = useToggle(router.pathname === href);
+	const router = useRouter();
+	const { value: isOpen, toggle } = useToggle(router.pathname === href);
 
-  // TODO: We currently have a bunch of listeners being added here - can this be improved?
-  useEffect(() => {
-    const handler = (url: string) => {
-      // debugger;
-      if (url.endsWith(href) && !isOpen) {
-        toggle();
-      }
-    };
+	// TODO: We currently have a bunch of listeners being added here - can this be improved?
+	useEffect(() => {
+		const handler = (url: string) => {
+			// debugger;
+			if (url.endsWith(href) && !isOpen) {
+				toggle();
+			}
+		};
 
-    router.events.on("routeChangeComplete", handler);
-    return () => router.events.off("routeChangeComplete", handler);
-  });
+		router.events.on("routeChangeComplete", handler);
+		return () => router.events.off("routeChangeComplete", handler);
+	});
 
-  const classes = classNames("flex items-center font-whitney rounded-md", className, {
-    "bg-brand-blurple text-white": router.pathname === href,
-    "text-theme-light-sidebar-text dark:text-theme-dark-sidebar-text hover:bg-theme-light-sidebar-hover hover:text-theme-light-sidebar-hover-text dark:hover:bg-theme-dark-sidebar-hover dark:hover:text-white":
-      router.pathname !== href
-  });
+	const classes = classNames("flex items-center font-whitney rounded-md", className, {
+		"bg-brand-blurple text-white": router.pathname === href,
+		"text-theme-light-sidebar-text dark:text-theme-dark-sidebar-text hover:bg-theme-light-sidebar-hover hover:text-theme-light-sidebar-hover-text dark:hover:bg-theme-dark-sidebar-hover dark:hover:text-white":
+			router.pathname !== href,
+	});
 
-  const caretClasses = classNames("w-4 h-4", {
-    "rotate-90": isOpen
-  });
+	const caretClasses = classNames("w-4 h-4", {
+		"rotate-90": isOpen,
+	});
 
-  const linkClasses = classNames("group flex items-center px-2 py-1 w-full font-medium", {
-    "ml-6": subLinks == null
-  });
+	const linkClasses = classNames("group flex items-center px-2 py-1 w-full font-medium", {
+		"ml-6": subLinks == null,
+	});
 
-  return (
-    <Fragment>
+	return (
+		<Fragment>
 			<span className={classes}>
 				{subLinks != null && (
-          <button onClick={toggle} className="pl-2">
-            <CaretFill className={caretClasses} />
-          </button>
-        )}
-        <Link href={href}>
+					<button onClick={toggle} className="pl-2">
+						<CaretFill className={caretClasses} />
+					</button>
+				)}
+				<Link href={href}>
 					<a className={linkClasses}>{children}</a>
 				</Link>
 			</span>
-      {isOpen && subLinks != null ? subLinks : null}
-    </Fragment>
-  );
+			{isOpen && subLinks != null ? subLinks : null}
+		</Fragment>
+	);
 }
 
 interface NavigationSubLinkProps {
-  href: string;
-  children: React.ReactNode;
+	href: string;
+	children: React.ReactNode;
 }
 
 function NavigationSubLink({ href, children }: NavigationSubLinkProps) {
-  const router = useRouter();
-  const classes = classNames("group flex items-center ml-6 px-2 py-1 w-full text-sm font-medium rounded-md", {
-    "text-dark dark:text-white": router.asPath === href,
-    "text-theme-light-sidebar-text hover:text-theme-light-sidebar-hover-text dark:hover:text-white":
-      router.asPath !== href
-  });
+	const router = useRouter();
+	const classes = classNames("group flex items-center ml-6 px-2 py-1 w-full text-sm font-medium rounded-md", {
+		"text-dark dark:text-white": router.asPath === href,
+		"text-theme-light-sidebar-text hover:text-theme-light-sidebar-hover-text dark:hover:text-white":
+			router.asPath !== href,
+	});
 
-  return (
-    <span className="relative flex items-center ml-4">
+	return (
+		<span className="relative flex items-center ml-4">
 			<Link href={href}>
 				<a className={classes}>
 					{router.asPath === href ? <Caret className="absolute -ml-4 w-2 h-2" /> : null}
-          {children}
+					{children}
 				</a>
 			</Link>
 		</span>
-  );
+	);
 }
 
 export default function Navigation() {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  // @ts-expect-error
-  const parsed: mi = menuItems;
-  const insert: JSX.Element[] = [];
-  [
-    "documentation",
-    "interactions",
-    "resources",
-    "topics",
-    "game-and-server-management",
-    "rich-presence",
-    "game-sdk",
-    "dispatch"
-  ].forEach((k: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if(parsed[k] === undefined){
-      return
-    }
-    const links = [];
-    // eslint-disable-next-line @typescript-eslint/no-for-in-array
-    for (const l in parsed[k].items) {
-      const link = parsed[k].items[l];
-      const href = `/${k === "documentation" ? "" : `${k}/`}${l === "index.mdx" ? "" : l.slice(0, -4)}`;
-      const sublinks: JSX.Element[]  = [];
-      parsed[k].items[l].sublinks.forEach((sublink) => {
-        sublinks.push(<NavigationSubLink href={`${href}#${sublink.toLowerCase().replaceAll(" ", "-")}`} key={sublink}>{sublink}</NavigationSubLink>)
-      })
-      links.push(<NavigationLink
-        href={href}
-        key={l.slice(0, -4)}
-        subLinks={(sublinks.length > 0 && l !== "index.mdx" && l !== "changelog.mdx" && l !== "typography.mdx") ? <Fragment>{sublinks}</Fragment> : undefined}
-      >{link.title}</NavigationLink>);
-    }
-    insert.push(<NavigationSection
-      title={parsed[k].name}
-      key={k}
-    >
-      {links}
-    </NavigationSection>);
-  });
-  /* parsed.map((category: { name: string | undefined; }) => <NavigationSection
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+	// @ts-expect-error
+	const parsed: mi = menuItems;
+	const insert: JSX.Element[] = [];
+	[
+		"documentation",
+		"interactions",
+		"resources",
+		"topics",
+		"game-and-server-management",
+		"rich-presence",
+		"game-sdk",
+		"dispatch",
+	].forEach((k: string) => {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (parsed[k] === undefined) {
+			return;
+		}
+		const links = [];
+		// eslint-disable-next-line @typescript-eslint/no-for-in-array
+		for (const l in parsed[k].items) {
+			const link = parsed[k].items[l];
+			const href = `/${k === "documentation" ? "" : `${k}/`}${l === "index.mdx" ? "" : l.slice(0, -4)}`;
+			const sublinks: JSX.Element[] = [];
+			parsed[k].items[l].sublinks.forEach((sublink) => {
+				sublinks.push(
+					<NavigationSubLink href={`${href}#${sublink.toLowerCase().replaceAll(" ", "-")}`} key={sublink}>
+						{sublink}
+					</NavigationSubLink>
+				);
+			});
+			links.push(
+				<NavigationLink
+					href={href}
+					key={l.slice(0, -4)}
+					subLinks={
+						sublinks.length > 0 && l !== "index.mdx" && l !== "changelog.mdx" && l !== "typography.mdx" ? (
+							<Fragment>{sublinks}</Fragment>
+						) : undefined
+					}
+				>
+					{link.title}
+				</NavigationLink>
+			);
+		}
+		insert.push(
+			<NavigationSection title={parsed[k].name} key={k}>
+				{links}
+			</NavigationSection>
+		);
+	});
+	/* parsed.map((category: { name: string | undefined; }) => <NavigationSection
     title={category.name}><NavigationLink href="/">Intro</NavigationLink></NavigationSection>)*/
-  return (
-    <nav className="flex-1 self-stretch mt-5 px-6">
-      <div className="hidden items-center -mt-4 mb-10 md:flex">
-        <a href="https://discord.com/developers/applications" className="hidden md:block">
-          <Discord className="w-9/12 text-black dark:text-white" />
-        </a>
-        <ThemeSwitcher />
-      </div>
+	return (
+		<nav className="flex-1 self-stretch mt-5 px-6">
+			<div className="hidden items-center -mt-4 mb-10 md:flex">
+				<a href="https://discord.com/developers/applications" className="hidden md:block">
+					<Discord className="w-9/12 text-black dark:text-white" />
+				</a>
+				<ThemeSwitcher />
+			</div>
 
-      <NavigationSection>
-        <NavigationLink href="https://theundarkpixel.com/" className="text-lg">
-          Back to The Undark Pixel
-        </NavigationLink>
-        <NavigationLink href="https://discord.gg/VHAyrvspCx" className="text-lg">
-          Join our Discord!
-        </NavigationLink>
-        <NavigationLink href="https://discord.com/developers/docs" className="text-lg">
-          Official Discord API Docs
-        </NavigationLink>
-      </NavigationSection>
+			<NavigationSection>
+				<NavigationLink href="https://theundarkpixel.com/" className="text-lg">
+					Back to The Undark Pixel
+				</NavigationLink>
+				<NavigationLink href="https://discord.gg/VHAyrvspCx" className="text-lg">
+					Join our Discord!
+				</NavigationLink>
+				<NavigationLink href="https://discord.com/developers/docs" className="text-lg">
+					Official Discord API Docs
+				</NavigationLink>
+			</NavigationSection>
 
-      {insert}
-    </nav>
-  );
+			{insert}
+		</nav>
+	);
 }

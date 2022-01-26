@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @responsive {
-  .scroll-pt-16 {
-    scroll-padding-top: 4rem;
-  }
+	.scroll-pt-16 {
+		scroll-padding-top: 4rem;
+	}
 
-  .scroll-pt-0 {
-    scroll-padding-top: 0;
-  }
+	.scroll-pt-0 {
+		scroll-padding-top: 0;
+	}
 }

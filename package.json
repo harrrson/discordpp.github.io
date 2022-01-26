@@ -1,64 +1,64 @@
 {
-  "name": "discord.dev",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "export": "next export",
-    "build:ci": "npm run build && npm run build:cionly",
-    "build:cionly": "tsc --build ci",
-    "start": "next start",
-    "lint": "eslint ci components contexts hooks pages",
-    "lint:fix": "eslint ci components contexts hooks pages --fix",
-    "prettier": "prettier -c **/*.mdx",
-    "prettier:fix": "prettier --write **/*.mdx",
-    "test:links": "node dist/ci/checkLinks.js"
-  },
-  "engines": {
-    "node": "16.13.0"
-  },
-  "dependencies": {
-    "@headlessui/react": "^1.4.1",
-    "@mdx-js/loader": "^1.6.22",
-    "@next/mdx": "^11.1.1",
-    "@tailwindcss/forms": "^0.3.3",
-    "@tailwindcss/typography": "^0.4.1",
-    "classnames": "^2.3.1",
-    "imagemin-optipng": "^8.0.0",
-    "next": "^11.1.2",
-    "next-compose-plugins": "^2.2.1",
-    "next-optimized-images": "^2.6.2",
-    "next-themes": "^0.0.15",
-    "parse-numeric-range": "^1.3.0",
-    "prism-react-renderer": "^1.2.1",
-    "prismjs": "^1.24.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "val-loader": "^4.0.0"
-  },
-  "devDependencies": {
-    "@actions/core": "^1.5.0",
-    "@types/jsdom": "^16.2.13",
-    "@types/mdx-js__react": "^1.5.4",
-    "@types/react": "17.0.19",
-    "@typescript-eslint/eslint-plugin": "^4.30.0",
-    "@typescript-eslint/parser": "^4.30.0",
-    "autoprefixer": "^10.3.4",
-    "chalk": "^4.1.2",
-    "eslint": "7.32.0",
-    "eslint-config-marine": "^9.0.6",
-    "eslint-config-next": "11.1.2",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "jsdom": "^17.0.0",
-    "postcss": "^8.3.6",
-    "prettier": "^2.3.2",
-    "prettier-plugin-tailwind": "^2.2.12",
-    "tailwindcss": "^2.2.9",
-    "typescript": "4.4.2"
-  },
-  "volta": {
-    "node": "16.8.0"
-  }
+	"name": "discord.dev",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"export": "next export",
+		"build:ci": "npm run build && npm run build:cionly",
+		"build:cionly": "tsc --build ci",
+		"start": "next start",
+		"lint": "eslint ci components contexts hooks pages",
+		"lint:fix": "eslint ci components contexts hooks pages --fix",
+		"prettier": "prettier -c **/*.mdx",
+		"prettier:fix": "prettier --write **/*.mdx",
+		"test:links": "node dist/ci/checkLinks.js"
+	},
+	"engines": {
+		"node": "16.13.0"
+	},
+	"dependencies": {
+		"@headlessui/react": "^1.4.1",
+		"@mdx-js/loader": "^1.6.22",
+		"@next/mdx": "^11.1.1",
+		"@tailwindcss/forms": "^0.3.3",
+		"@tailwindcss/typography": "^0.4.1",
+		"classnames": "^2.3.1",
+		"imagemin-optipng": "^8.0.0",
+		"next": "^11.1.2",
+		"next-compose-plugins": "^2.2.1",
+		"next-optimized-images": "^2.6.2",
+		"next-themes": "^0.0.15",
+		"parse-numeric-range": "^1.3.0",
+		"prism-react-renderer": "^1.2.1",
+		"prismjs": "^1.24.1",
+		"react": "17.0.2",
+		"react-dom": "17.0.2",
+		"val-loader": "^4.0.0"
+	},
+	"devDependencies": {
+		"@actions/core": "^1.5.0",
+		"@types/jsdom": "^16.2.13",
+		"@types/mdx-js__react": "^1.5.4",
+		"@types/react": "17.0.19",
+		"@typescript-eslint/eslint-plugin": "^4.30.0",
+		"@typescript-eslint/parser": "^4.30.0",
+		"autoprefixer": "^10.3.4",
+		"chalk": "^4.1.2",
+		"eslint": "7.32.0",
+		"eslint-config-marine": "^9.0.6",
+		"eslint-config-next": "11.1.2",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"jsdom": "^17.0.0",
+		"postcss": "^8.3.6",
+		"prettier": "^2.3.2",
+		"prettier-plugin-tailwind": "^2.2.12",
+		"tailwindcss": "^2.2.9",
+		"typescript": "4.4.2"
+	},
+	"volta": {
+		"node": "16.8.0"
+	}
 }
