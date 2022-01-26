@@ -20,5 +20,17 @@ module.exports = withPlugins([
 ], {
   images: {
     disableStaticImages: true // Conflicts with next-optimized-images otherwise
+  },
+  webpack: (config, { isServer }) => {
+    config.module.rules.push(
+      {
+        test: require.resolve('./vals/menuItems.js'),
+        use: [{ loader: 'val-loader' }]
+      }
+    )
+    if (!isServer) {
+      config.resolve.fallback.fs = false;
+    }
+    return config
   }
 });
