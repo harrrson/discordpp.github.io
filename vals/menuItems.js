@@ -37,14 +37,9 @@ module.exports = async () => {
 	//console.log(paths)
 
 	const names = {
-		"documentation": "Documentation",
-		"interactions": "Interactions",
-		"resources": "Resources",
-		"topics": "Topics",
-		"game-and-server-management": "Game & Server Management",
-		"rich-presence": "Rich Presence",
-		"game-sdk": "Game SDK",
-		"dispatch": "Dispatch",
+		documentation: "Documentation",
+		setup: "Setup",
+		plugins: "Plugins",
 	};
 
 	let info = {};
@@ -52,26 +47,28 @@ module.exports = async () => {
 	await asyncForEach(Array.from(paths.keys()), async (category) => {
 		info[category] = {
 			name: names[category] === undefined ? category : names[category],
-			items: await paths.get(category).reduce(async (obj, page) => {
-				const filePath = path.join(pageDirectory, category === "documentation" ? "" : category, page);
-				let first = true;
-				const content = (await fsp.readFile(filePath, "utf8")).split(/\r?\n/).filter((line) => {
-					if (line.startsWith("## ") || (line.startsWith("# ") && first)) {
-						first = false;
-						return true;
-					} else {
-						return false;
-					}
-				});
-				//console.log(category, page, content);
-				return {
-					...(await obj),
-					[page]: {
-						title: content[0].substr(2),
-						sublinks: content.slice(1).map((line) => line.substr(3)),
-					},
-				};
-			}, {}),
+			items: await Promise.all(
+				paths.get(category).map(async (page) => {
+					const filePath = path.join(pageDirectory, category === "documentation" ? "" : category, page);
+					const content = (await fsp.readFile(filePath, "utf8")).split(/\r?\n/);
+					const h1 = content.filter((line) => line.startsWith("# ")).map((line) => line.substr(2));
+					const h2 = content.filter((line) => line.startsWith("## ")).map((line) => line.substr(3));
+					const config = content
+						.map((line) => line.match(/\[(\S+)]: (\S+)/))
+						.filter((res) => res)
+						.map((res) => res.slice(1, 3))
+						.reduce((obj, pair) => {
+							obj[pair[0]] = pair[1];
+							return obj;
+						}, {});
+					return {
+						name: page.slice(0, -4),
+						title: h1[0],
+						sublinks: h2,
+						priority: config.priority !== undefined ? parseInt(config.priority) : 0,
+					};
+				})
+			),
 		};
 	});
 

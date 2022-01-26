@@ -13,8 +13,10 @@ interface mi {
 }
 
 interface miLink {
+	name: string;
 	title: string;
 	sublinks: string[];
+	priority: number;
 }
 
 interface miCategory {
@@ -128,47 +130,41 @@ export default function Navigation() {
 	// @ts-expect-error
 	const parsed: mi = menuItems;
 	const insert: JSX.Element[] = [];
-	[
-		"documentation",
-		"interactions",
-		"resources",
-		"topics",
-		"game-and-server-management",
-		"rich-presence",
-		"game-sdk",
-		"dispatch",
-	].forEach((k: string) => {
+	["documentation", "setup", "plugins"].forEach((k: string) => {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (parsed[k] === undefined) {
 			return;
 		}
-		const links = [];
-		// eslint-disable-next-line @typescript-eslint/no-for-in-array
-		for (const l in parsed[k].items) {
-			const link = parsed[k].items[l];
-			const href = `/${k === "documentation" ? "" : `${k}/`}${l === "index.mdx" ? "" : l.slice(0, -4)}`;
-			const sublinks: JSX.Element[] = [];
-			parsed[k].items[l].sublinks.forEach((sublink) => {
-				sublinks.push(
-					<NavigationSubLink href={`${href}#${sublink.toLowerCase().replaceAll(" ", "-")}`} key={sublink}>
-						{sublink}
-					</NavigationSubLink>
+		const links: JSX.Element[] = [];
+		parsed[k].items
+			.sort((a, b) => b.priority - a.priority)
+			.forEach((link) => {
+				const href = `/${k === "documentation" ? "" : `${k}/`}${link.name === "index" ? "" : link.name}`;
+				const sublinks: JSX.Element[] = [];
+				link.sublinks.forEach((sublink) => {
+					sublinks.push(
+						<NavigationSubLink href={`${href}#${sublink.toLowerCase().replaceAll(" ", "-")}`} key={sublink}>
+							{sublink}
+						</NavigationSubLink>
+					);
+				});
+				links.push(
+					<NavigationLink
+						href={href}
+						key={link.name.slice(0, -4)}
+						subLinks={
+							sublinks.length > 0 &&
+							link.name !== "index" &&
+							link.name !== "changelog" &&
+							link.name !== "typography" ? (
+								<Fragment>{sublinks}</Fragment>
+							) : undefined
+						}
+					>
+						{link.title}
+					</NavigationLink>
 				);
 			});
-			links.push(
-				<NavigationLink
-					href={href}
-					key={l.slice(0, -4)}
-					subLinks={
-						sublinks.length > 0 && l !== "index.mdx" && l !== "changelog.mdx" && l !== "typography.mdx" ? (
-							<Fragment>{sublinks}</Fragment>
-						) : undefined
-					}
-				>
-					{link.title}
-				</NavigationLink>
-			);
-		}
 		insert.push(
 			<NavigationSection title={parsed[k].name} key={k}>
 				{links}
