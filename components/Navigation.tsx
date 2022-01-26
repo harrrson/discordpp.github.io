@@ -125,7 +125,7 @@ function NavigationSubLink({ href, children }: NavigationSubLinkProps) {
 
 export default function Navigation() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  // @ts-ignore
+  // @ts-expect-error
   const parsed: mi = menuItems;
   const insert = [];
   [
@@ -138,12 +138,16 @@ export default function Navigation() {
     "game-sdk",
     "dispatch"
   ].forEach((k) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if(parsed[k] === undefined){
+      return
+    }
     const links = [];
     // eslint-disable-next-line @typescript-eslint/no-for-in-array
     for (const l in parsed[k].items) {
       const link = parsed[k].items[l];
       const href = `/${k === "documentation" ? "" : `${k}/`}${l === "index.mdx" ? "" : l.slice(0, -4)}`;
-      let sublinks = [];
+      const sublinks = [];
       parsed[k].items[l].sublinks.forEach((sublink) => {
         sublinks.push(<NavigationSubLink href={`${href}#${sublink.toLowerCase().replaceAll(" ", "-")}`} key={sublink}>{sublink}</NavigationSubLink>)
       })

@@ -52,7 +52,7 @@ module.exports = async () => {
 
   await asyncForEach(Array.from(paths.keys()), async (category) => {
     info[category] = {
-      name: names[category],
+      name: names[category] === undefined ? category : names[category],
       items: await paths.get(category).reduce(async (obj, page) => {
         const filePath = path.join(pageDirectory, (category === "documentation" ? "" : category), page);
         let first = true;
