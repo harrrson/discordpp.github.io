@@ -127,7 +127,7 @@ export default function Navigation() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   // @ts-expect-error
   const parsed: mi = menuItems;
-  const insert = [];
+  const insert: JSX.Element[] = [];
   [
     "documentation",
     "interactions",
@@ -137,7 +137,7 @@ export default function Navigation() {
     "rich-presence",
     "game-sdk",
     "dispatch"
-  ].forEach((k) => {
+  ].forEach((k: string) => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if(parsed[k] === undefined){
       return
@@ -147,7 +147,7 @@ export default function Navigation() {
     for (const l in parsed[k].items) {
       const link = parsed[k].items[l];
       const href = `/${k === "documentation" ? "" : `${k}/`}${l === "index.mdx" ? "" : l.slice(0, -4)}`;
-      const sublinks = [];
+      const sublinks: JSX.Element[]  = [];
       parsed[k].items[l].sublinks.forEach((sublink) => {
         sublinks.push(<NavigationSubLink href={`${href}#${sublink.toLowerCase().replaceAll(" ", "-")}`} key={sublink}>{sublink}</NavigationSubLink>)
       })
@@ -158,7 +158,7 @@ export default function Navigation() {
       >{link.title}</NavigationLink>);
     }
     insert.push(<NavigationSection
-      title={menuItems[k].name}
+      title={parsed[k].name}
       key={k}
     >
       {links}
