@@ -189,6 +189,9 @@ export default function Navigation() {
 				<NavigationLink href="https://discord.gg/VHAyrvspCx" className="text-lg">
 					Join our Discord!
 				</NavigationLink>
+				<NavigationLink href="https://github.com/DiscordPP" className="text-lg">
+					Check out our source code
+				</NavigationLink>
 				<NavigationLink href="https://discord.com/developers/docs" className="text-lg">
 					Official Discord API Docs
 				</NavigationLink>
