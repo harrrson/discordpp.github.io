@@ -1,0 +1,37 @@
+# Design Principles
+
+## Plugins
+
+Discord++'s plugin system brings two major pros: flexible dependencies and optional addons, both without modifying the core library code.
+
+### Mixins
+
+Mixins allow a given function can be overridden multiple times, e.g. `doCall` is implemented in the REST module but it's also overridden by **Plugin: RateLimit** to stop calls from going out too fast for the API's liking.
+
+Mixins play nicely with IntelliSense tools, e.g. **Plugin: Endpoints** can add methods like `createMessage` and `deleteChannel` without needing to do something weird like looking up `std::function(void*)`
+
+#### Additional Reading:
+
+- [_Implementing Layered Designs with Mixin Layers_ by Yannis Smaragdakis and Don Batory](https://yanniss.github.io/templates.pdf)
+
+### Submodules
+
+Submodules are used to grab a defined version of plugins but can be a bit clunky. In the future I plan to move to CMake's `FetchContent` or a wrapper of it like [CPM](https://github.com/cpm-cmake/CPM.cmake).
+
+### Build-A-Bot
+
+Setting up a project involves adding plugins to two places in `CMakeLists.txt`, two places in `include.hh`, and `extern.cc`. As such, I created Build-A-Bot as a handy Bash script to automated the initial process. It makes use of `select` to provide a handy menu system for picking plugins and branches and configures the bot to use them.
+
+## Calls
+
+It used to be that to call an API endpoint you called one function with the form of `call("GET", "/url/", {payload}, [](){}, [](json){})`. This wasn't very extensible- it required a ton of definitions for the different numbers of parameters with/without shared pointers, it would've been really difficult to shoehorn in file uploading, and deriving it for endpoint-specific calls would have been incredibly complicated.
+
+### Parametric Macro Class Construction
+
+To define a `Call` `class` you define the macros `Bot` (The `class` the `Call` is inside), `Parent` or `BASECALL` (The parent of the `Call` or `BASECALL` if it's the base `Call` `class`), `function` (a list of methods to call in the `Bot` to create `Call` objects), and `Fields` (a list of macros to define the fields of the `Call`). You then `#include "macros/defineCallOpen.hh"` and `#include "macros/defineCallClose.hh"` with any custom method definitions in between. This consumes the parameter macros so that they don't affect any of the following code or you can start again with a new class.
+
+### Fluent Parameters
+
+Fluent design was the method I settled on for defining calls to minimize code surface without decreasing usability. the base `Call` object now takes a simple `std::string` `body` with conversion from a `json` payload to the `std::string` handled by the derived class `JsonCall`. There's also the new addition of `FileCall`, derived from `JsonCall`. `FileCall` adds the `file`, `file_type` and `file_name` parameters needed to upload a file.
+
+The fluent structure of calls also allow for **Plugin: Endpoints** which adds derivations of the 3 basic `Call` classes that cover up the base `method`, `target`, and `payload` fields with specific parameters like `channel_id` and `content`.

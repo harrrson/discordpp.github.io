@@ -1,0 +1,43 @@
+# Add a Plugin
+
+[priority]: 1
+
+_For a list of plugins check out #📃plugin-list on the Discord++ Discord server_
+
+## Add It to Your Project
+
+1. Download the Source
+   - `git submodule add <repository> [<path>]` is a nice way to have `git` still track the remote repositiories
+     - After adding the submodules you want, use `git submodule update --init --recursive` to initialize them.
+   - You could also download the plugin as
+2. Place them all in a subdirectory of your project. (I use `lib/`)
+
+## Add It to CMake
+
+1. Add `ADD_SUBDIRECTORY(<relative path>)` for Discord++ and each module, e.g.
+
+```cmake
+add_subdirectory(lib/plugin-name)
+```
+
+2. Add the plugin's equivalent of `discordpp-plugin-name` and each module to your `TARGET_LINK_LIBRARIES` command, e.g.
+
+```cmake
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ... discordpp-plugin-name)
+```
+
+## Add It to Your Code
+
+1. Include the header file for the plugin, e.g.
+
+```cpp
+#include <discordpp/plugin-name.hh>
+```
+
+2. Add it to your bot object, e.g.
+
+```cpp
+using DppBot = discordpp::PluginName<...discordpp::Bot...>;
+```
+
+If you're working from [Echo](https://github.com/DiscordPP/echo-bot) or [Build-A-Bot](https://github.com/DiscordPP/build-a-bot) as a template you'll need to do this twice in `include.hh` and once in `extern.cc`

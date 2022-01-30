@@ -1,0 +1,50 @@
+# Manual Setup
+
+[priority]: 2
+[title]: Manual
+
+## Install Discord++ and Plugins
+
+Follow the [Add a Plugin](setup/plugin) guide to install at minimum Discord++, a WebSocket module, a REST module, and a ratelimiting module.
+
+## In your `main`
+
+> Assume `using dpp = discordpp;`
+
+1. Create a Bot object. e.g.
+
+```cpp
+auto bot = std::make_shared<DppBot>();
+```
+
+For this example, I declared a `DppBot` alias just after the `#include` statements
+
+```cpp
+using DppBot =
+dpp::PluginRatelimit<
+    dpp::WebsocketSimpleweb<
+        dpp::RestBeast<
+            dpp::Bot
+        >
+    >
+>;
+```
+
+You can also move this statement to a predeclared header and predefine the bot in a separate source file for faster recompile times. Check out [Echo](https://github.com/DiscordPP/echo-bot) or [Build-A-Bot](https://github.com/DiscordPP/build-a-bot) for an example. 2. Add responses to events with `handlers.insert` e.g.
+
+```cpp
+bot->handlers.insert(
+	{
+		"MESSAGE_CREATE",
+		[&bot](json msg){
+			//Do Stuff
+		}
+	}
+);
+```
+
+3. Create a `std::shared_ptr<boost::asio::io_context>`
+   - e.g. `auto aioc = std::make_shared<asio::io_context>();`
+4. Initialize the bot object and any plugins that require it e.g. `bot->initBot(6, token, aioc)`. The token should be in the form `Bot <token>` where you replace `<token>` with your token.
+   - I like to load my tokens from a `.gitignore`d `token.dat`
+5. Run the bot: `bot->run();` (This will also run the io_context)
