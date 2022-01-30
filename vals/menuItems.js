@@ -12,12 +12,8 @@ async function asyncForEach(array, callback) {
 module.exports = async () => {
 	const pageDirectory = path.join(process.cwd(), "pages");
 	const entries = await fsp.readdir(pageDirectory, { withFileTypes: true });
-	//console.log("pageDirectory", pageDirectory);
-	//console.log("entries", entries);
 
 	const onlyDirs = entries.filter((de) => de.isDirectory()).map((de) => de.name);
-
-	//console.log(onlyDirs);
 
 	const paths = new Map();
 	paths.set(
@@ -28,13 +24,10 @@ module.exports = async () => {
 			.map((de) => de.name)
 	);
 	await Promise.all(
-		onlyDirs
-			//.map((de) => de.name)
-			.map(async (dirname) => {
-				paths.set(dirname, await fsp.readdir(path.join(pageDirectory, dirname)));
-			})
+		onlyDirs.map(async (dirname) => {
+			paths.set(dirname, await fsp.readdir(path.join(pageDirectory, dirname)));
+		})
 	);
-	//console.log(paths)
 
 	const names = {
 		documentation: "Documentation",
@@ -63,7 +56,7 @@ module.exports = async () => {
 						}, {});
 					return {
 						name: page.slice(0, -4),
-						title: h1[0],
+						title: config.title ? config.title : h1[0],
 						sublinks: h2,
 						priority: config.priority !== undefined ? parseInt(config.priority) : 0,
 					};
