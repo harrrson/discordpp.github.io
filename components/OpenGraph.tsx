@@ -7,14 +7,15 @@ interface OpenGraphProps {
 }
 
 export default function OpenGraph({
-	title = "Discord Developers",
-	description = "👾 BOTS BOTS BOTS 👾",
+	title = "Discord++ Docs",
+	description = "The Original C++ Discord Library",
 }: OpenGraphProps) {
 	const router = useRouter();
-	const url = `https://discord.com/developers/docs${router.asPath}`;
+	const url = `https://discordpp.theundarkpixel.com/${router.asPath}`;
 
 	return (
 		<Head>
+			<title>{title}</title>
 			<meta key="description" name="description" content={description} />
 
 			{/* Twitter */}
