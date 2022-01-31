@@ -1,4 +1,4 @@
-import { useCallback, useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import Link from "next/link";
 import Bars from "./icons/Bars";
 import MenuContext from "../contexts/MenuContext";
@@ -9,7 +9,7 @@ export default function Header() {
 	const { setOpen } = useContext(MenuContext);
 
 	const onMenuClick = useCallback(
-		(event) => {
+		(event: React.MouseEvent) => {
 			event.preventDefault();
 			setOpen();
 		},

@@ -12,6 +12,7 @@ function getText(node: React.ReactNode): string {
 	}
 
 	if (isValidElement(node)) {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		return getText(node.props.children);
 	}
 

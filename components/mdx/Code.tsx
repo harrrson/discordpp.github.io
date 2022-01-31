@@ -33,6 +33,7 @@ function cleanTokens(tokens: Token[][]): Token[][] {
 
 	const lastToken = tokens[tokensLength - 1];
 
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	if (lastToken.length === 1 && lastToken[0].empty) {
 		return tokens.slice(0, tokensLength - 1);
 	}
@@ -108,11 +109,15 @@ export default function Code({ children, className, metastring, file, ...props }
 								let diffSymbol = "";
 
 								if (
+									// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 									Object.values(SYMBOLS).includes(line[0]?.content?.[0]) ||
+									// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 									(line[0]?.content === "" && Object.values(SYMBOLS).includes(line[1]?.content))
 								) {
+									// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
 									diffSymbol = line[0]?.content?.length ? line[0].content[0] : line[1].content;
 
+									// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 									lineClass.backgroundColor = diffBgColorMap[diffSymbol];
 
 									isDiff = true;
@@ -125,6 +130,7 @@ export default function Code({ children, className, metastring, file, ...props }
 										{isTerminal && !isDiff && <span className={lineNumberClasses}>$</span>}
 										{!isTerminal && !isDiff && hasLines && <span className={lineNumberClasses}>{i + 1}</span>}
 										{isDiff && hasLines && (
+											// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 											<span className={lineNumberClasses} style={{ color: lineClass.color }}>
 												{["+", "-"].includes(diffSymbol) ? diffSymbol : i + 1}
 											</span>
@@ -139,13 +145,16 @@ export default function Code({ children, className, metastring, file, ...props }
 												if (
 													isDiff &&
 													(key === 0 || key === 1) &&
+													// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
 													Object.values(SYMBOLS).includes(token.content.charAt(0))
 												) {
 													return (
 														<span
 															{...getTokenProps({
+																// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 																token: {
 																	...token,
+																	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
 																	content: token.content.slice(1),
 																},
 																key,
@@ -153,7 +162,7 @@ export default function Code({ children, className, metastring, file, ...props }
 														/>
 													);
 												}
-												// eslint-disable-next-line react/jsx-key
+												// eslint-disable-next-line react/jsx-key,@typescript-eslint/no-unsafe-assignment
 												return <span {...getTokenProps({ token, key })} />;
 											})}
 										</span>
